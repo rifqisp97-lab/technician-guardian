@@ -4,7 +4,7 @@ import { Search, Filter, AlertCircle, Trash2, Crown, Hash } from 'lucide-react';
 
 interface TicketListProps {
   tickets: Ticket[];
-  onDelete: (id: string) => void;
+  onDelete: (ticketId: string) => void;
 }
 
 const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete }) => {
@@ -95,7 +95,7 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete }) => {
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ODP</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Duration (TTR)</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
-              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider">Action</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-slate-200">
@@ -140,12 +140,8 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete }) => {
                         {ticket.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <button 
-                        onClick={() => onDelete(ticket.id)}
-                        className="text-slate-400 hover:text-red-600 transition-colors p-1.5 rounded-lg hover:bg-red-50"
-                        title="Hapus Tiket"
-                      >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button onClick={() => onDelete(ticket.id)} className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Trash2 size={16} />
                       </button>
                     </td>
