@@ -1,17 +1,5 @@
 import { Ticket } from '../types';
 
-// Default data to ensure the app has content on first load or after data is cleared.
-const DEFAULT_CSV_DATA = `No;Tanggal Input;Team;No Tiket;Ownergrub;No Inet;Reported Date;Status;ODP;TTR;Jam Close;Team Close
-1;01/07/2024 08:15;TEKNISI_A & TEKNISI_B;IN12345678;OWNERGRUB REGULER;123456789012;01/07/2024 08:00;OPEN;ODP-ABC-123;1 jam 30 menit;;
-2;01/07/2024 09:00;TEKNISI_C & TEKNISI_D;IN23456789;OWNERGRUB PLATINUM;234567890123;01/07/2024 08:45;OPEN;ODP-DEF-456;45 menit;;
-3;01/07/2024 10:30;TEKNISI_A & TEKNISI_B;IN34567890;OWNERGRUB REGULER;345678901234;01/07/2024 10:15;CLOSE;ODP-GHI-789;2 jam 15 menit;01/07/2024 12:45;TEKNISI_A & TEKNISI_B
-4;02/07/2024 11:00;TEKNISI_E & TEKNISI_F;IN45678901;OWNERGRUB HVC;456789012345;02/07/2024 10:30;OPEN;ODP-JKL-101;;;
-5;02/07/2024 14:00;TEKNISI_C & TEKNISI_D;IN56789012;OWNERGRUB REGULER;567890123456;02/07/2024 13:45;CLOSE;ODP-MNO-112;3 jam 0 menit;02/07/2024 16:45;TEKNISI_C & TEKNISI_D
-6;03/07/2024 08:45;TEKNISI_A & TEKNISI_B;IN67890123;OWNERGRUB PLATINUM;678901234567;03/07/2024 08:30;OPEN;ODP-PQR-131;36 jam 5 menit;;
-7;03/07/2024 09:15;TEKNISI_E & TEKNISI_F;IN78901234;OWNERGRUB REGULER;789012345678;03/07/2024 09:00;OPEN;ODP-STU-142;;;
-`;
-
-
 const parseDate = (dateStr: string): Date => {
   if (!dateStr || dateStr.trim() === '') return new Date();
   
@@ -129,42 +117,4 @@ export const parseCSV = (csvContent: string): Ticket[] => {
   }
 
   return tickets;
-};
-
-export const getTickets = (): Ticket[] => {
-  return parseCSV(DEFAULT_CSV_DATA);
-};
-
-export const generateCSV = (tickets: Ticket[]): string => {
-  const header = "No;Tanggal Input;Team;No Tiket;Ownergrub;No Inet;Reported Date;Status;ODP;TTR;Jam Close;Team Close";
-  
-  const formatDate = (date: Date | null | undefined) => {
-    if (!date) return '';
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year = d.getFullYear();
-    const hours = String(d.getHours()).padStart(2, '0');
-    const minutes = String(d.getMinutes()).padStart(2, '0');
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
-  };
-  
-  const rows = tickets.map((t, index) => {
-    return [
-      index + 1,
-      formatDate(t.inputDate),
-      t.team,
-      t.ticketNo,
-      t.ownerGroup,
-      t.inetNo,
-      formatDate(t.reportedDate),
-      t.status,
-      `"${t.odp.replace(/"/g, '""')}"`,
-      t.ttrRaw,
-      formatDate(t.closeDate),
-      t.teamClose
-    ].join(';');
-  });
-
-  return [header, ...rows].join('\n');
 };

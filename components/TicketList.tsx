@@ -4,10 +4,9 @@ import { Search, Filter, AlertCircle, Trash2, Crown, Hash } from 'lucide-react';
 
 interface TicketListProps {
   tickets: Ticket[];
-  onDelete: (ticketId: string) => void;
 }
 
-const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete }) => {
+const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTeam, setFilterTeam] = useState('All');
   const [filterOwner, setFilterOwner] = useState('All');
@@ -95,7 +94,6 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete }) => {
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ODP</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Duration (TTR)</th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-slate-200">
@@ -140,17 +138,12 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete }) => {
                         {ticket.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button onClick={() => onDelete(ticket.id)} className="text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Trash2 size={16} />
-                      </button>
-                    </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan={8} className="px-6 py-10 text-center text-slate-500 flex flex-col items-center justify-center">
+                <td colSpan={7} className="px-6 py-10 text-center text-slate-500 flex flex-col items-center justify-center">
                    <AlertCircle className="w-8 h-8 mb-2 text-slate-400" />
                    <p>No tickets found matching your criteria.</p>
                 </td>
