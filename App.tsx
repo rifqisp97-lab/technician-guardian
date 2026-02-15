@@ -38,11 +38,15 @@ const App: React.FC = () => {
     }
 
     const fetchTickets = async () => {
-      setIsSyncing(true);
-      setError(null);
+      // Prevent re-syncing if one is already in progress
+      if(isSyncing && !isInitialLoading) return;
 
+      setIsSyncing(true);
+      
       try {
-        // Tambahkan parameter acak untuk mencegah caching
+        // Clear previous error on new attempt
+        setError(null);
+
         const urlWithCacheBust = new URL(sheetUrl);
         urlWithCacheBust.searchParams.set('_cacheBust', new Date().getTime().toString());
         
@@ -71,7 +75,7 @@ const App: React.FC = () => {
     };
 
     fetchTickets(); // Ambil data pertama kali
-    const intervalId = setInterval(fetchTickets, 60000); // Auto-refresh setiap 60 detik
+    const intervalId = setInterval(fetchTickets, 30000); // Auto-refresh setiap 30 detik
 
     return () => clearInterval(intervalId); // Bersihkan interval saat komponen dibongkar
   }, []);
@@ -99,7 +103,7 @@ const App: React.FC = () => {
       );
     }
 
-    if (tickets.length === 0) {
+    if (tickets.length === 0 && !isSyncing) {
       return (
         <div className="flex flex-col items-center justify-center h-96 bg-white rounded-xl border border-dashed border-slate-300">
           <FileSpreadsheet size={32} className="text-slate-400" />
